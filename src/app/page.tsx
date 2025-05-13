@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import type Phaser from "phaser";
 
-// Lista nazw obrazków
+// Lista dostępnych kafelków
 const tileKeys = [
   "bridge", "buildings", "buildings_metro", "double_turn", "intersection", "parking",
   "partial_intersection", "river", "river_bridge", "river_port", "river_train_bridge",
@@ -11,7 +11,7 @@ const tileKeys = [
   "train_road_bridge", "train_station", "train_walk_bridge", "turn"
 ];
 
-// Mapowanie rotacji tekstowej na radiany
+// Rotacja tekstowa → radiany
 const rotationMap: Record<string, number> = {
   ZERO: 0,
   ONE: Math.PI / 2,
@@ -19,7 +19,7 @@ const rotationMap: Record<string, number> = {
   THREE: (3 * Math.PI) / 2,
 };
 
-// Typ pojedynczego wpisu w moves.json
+// Typ pojedynczego wpisu z moves.json
 type MoveEntry = {
   move: {
     rotation: keyof typeof rotationMap;
@@ -31,7 +31,11 @@ type MoveEntry = {
 export default function Home() {
   const gameContainerRef = useRef(null);
   const [sceneInstance, setSceneInstance] = useState<Phaser.Scene | null>(null);
-  const [gridInfo, setGridInfo] = useState<{ size: number; offsetX: number; offsetY: number } | null>(null);
+  const [gridInfo, setGridInfo] = useState<{
+    size: number;
+    offsetX: number;
+    offsetY: number;
+  } | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -61,10 +65,8 @@ export default function Home() {
           const offsetX = (width - gridWidth) / 2;
           const offsetY = (height - gridHeight) / 2;
 
-          // Zapisz dane siatki do stanu
           setGridInfo({ size, offsetX, offsetY });
 
-          // Rysuj siatkę
           for (let y = 0; y < rows; y++) {
             for (let x = 0; x < cols; x++) {
               this.add.rectangle(
@@ -97,7 +99,6 @@ export default function Home() {
     loadPhaserAndInitGame();
   }, []);
 
-  // Ładowanie planszy z moves.json
   const handleFillGridFromFile = async () => {
     if (!sceneInstance || !gridInfo) return;
 
@@ -106,7 +107,7 @@ export default function Home() {
 
     const { size, offsetX, offsetY } = gridInfo;
 
-    data.forEach((entry) => {
+    data.forEach((entry: MoveEntry) => {
       const { row, column } = entry.move.coordinates;
       const key = entry.move.elementDefinitionName;
       const rotation = rotationMap[entry.move.rotation] ?? 0;
