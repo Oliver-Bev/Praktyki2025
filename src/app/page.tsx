@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-
+import type Phaser from "phaser";
 const tileKeys = [
   "bridge", "buildings", "buildings_metro", "double_turn", "intersection", "parking",
   "partial_intersection", "river", "river_bridge", "river_port", "river_train_bridge",
@@ -18,8 +18,8 @@ const rotationMap: Record<string, number> = {
 
 export default function Home() {
   const gameContainerRef = useRef(null);
-  const [sceneInstance, setSceneInstance] = useState<any>(null);
-  const [gridInfo, setGridInfo] = useState<{ size: number, offsetX: number, offsetY: number } | null>(null);
+  const [sceneInstance, setSceneInstance] = useState<Phaser.Scene | null>(null);
+  const [gridInfo, setGridInfo] = useState<{ size: number; offsetX: number; offsetY: number } | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
