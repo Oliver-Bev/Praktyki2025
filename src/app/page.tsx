@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import type Phaser from "phaser";
+
+// Lista nazw obrazków
 const tileKeys = [
   "bridge", "buildings", "buildings_metro", "double_turn", "intersection", "parking",
   "partial_intersection", "river", "river_bridge", "river_port", "river_train_bridge",
@@ -9,11 +11,21 @@ const tileKeys = [
   "train_road_bridge", "train_station", "train_walk_bridge", "turn"
 ];
 
+// Mapowanie rotacji tekstowej na radiany
 const rotationMap: Record<string, number> = {
   ZERO: 0,
   ONE: Math.PI / 2,
   TWO: Math.PI,
   THREE: (3 * Math.PI) / 2,
+};
+
+// Typ pojedynczego wpisu w moves.json
+type MoveEntry = {
+  move: {
+    rotation: keyof typeof rotationMap;
+    coordinates: { row: number; column: number };
+    elementDefinitionName: string;
+  };
 };
 
 export default function Home() {
@@ -49,7 +61,7 @@ export default function Home() {
           const offsetX = (width - gridWidth) / 2;
           const offsetY = (height - gridHeight) / 2;
 
-          // Zapamiętaj info o siatce
+          // Zapisz dane siatki do stanu
           setGridInfo({ size, offsetX, offsetY });
 
           // Rysuj siatkę
@@ -85,15 +97,16 @@ export default function Home() {
     loadPhaserAndInitGame();
   }, []);
 
+  // Ładowanie planszy z moves.json
   const handleFillGridFromFile = async () => {
     if (!sceneInstance || !gridInfo) return;
 
     const response = await fetch("/moves.json");
-    const data = await response.json();
+    const data: MoveEntry[] = await response.json();
 
     const { size, offsetX, offsetY } = gridInfo;
 
-    data.forEach((entry: any) => {
+    data.forEach((entry) => {
       const { row, column } = entry.move.coordinates;
       const key = entry.move.elementDefinitionName;
       const rotation = rotationMap[entry.move.rotation] ?? 0;
