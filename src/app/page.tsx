@@ -1,103 +1,148 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
+const tileKeys = [
+  "bridge", "buildings", "buildings_metro", "double_turn", "intersection", "parking",
+  "partial_intersection", "river", "river_bridge", "river_port", "river_train_bridge",
+  "river_walk_bridge", "road", "road_crosswalk", "road_parkings", "road_tunel", "train",
+  "train_road_bridge", "train_station", "train_walk_bridge", "turn"
+];
+
+const rotationMap: Record<string, number> = {
+  ZERO: 0,
+  ONE: Math.PI / 2,
+  TWO: Math.PI,
+  THREE: (3 * Math.PI) / 2,
+};
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const gameContainerRef = useRef(null);
+  const [sceneInstance, setSceneInstance] = useState<any>(null);
+  const [gridInfo, setGridInfo] = useState<{ size: number, offsetX: number, offsetY: number } | null>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const loadPhaserAndInitGame = async () => {
+      const Phaser = await import("phaser");
+      const height = window.innerHeight * 0.9;
+      const width = height;
+
+      class MyScene extends Phaser.Scene {
+        constructor() {
+          super("GameScene");
+        }
+
+        preload() {
+          tileKeys.forEach((key) => {
+            this.load.image(key, `/img/${key}.png`);
+          });
+        }
+
+        create() {
+          const rows = 11;
+          const cols = 11;
+          const size = Math.floor(Math.min(width, height) / cols);
+          const gridWidth = size * cols;
+          const gridHeight = size * rows;
+          const offsetX = (width - gridWidth) / 2;
+          const offsetY = (height - gridHeight) / 2;
+
+          // Zapamiętaj info o siatce
+          setGridInfo({ size, offsetX, offsetY });
+
+          // Rysuj siatkę
+          for (let y = 0; y < rows; y++) {
+            for (let x = 0; x < cols; x++) {
+              this.add.rectangle(
+                offsetX + x * size + size / 2,
+                offsetY + y * size + size / 2,
+                size,
+                size,
+                0x000000
+              ).setStrokeStyle(1, 0xffffff);
+            }
+          }
+
+          setSceneInstance(this);
+        }
+      }
+
+      const config = {
+        type: Phaser.AUTO,
+        width,
+        height,
+        backgroundColor: "#1a1a1a",
+        parent: gameContainerRef.current,
+        scene: MyScene,
+      };
+
+      const game = new Phaser.Game(config);
+      return () => game.destroy(true);
+    };
+
+    loadPhaserAndInitGame();
+  }, []);
+
+  const handleFillGridFromFile = async () => {
+    if (!sceneInstance || !gridInfo) return;
+
+    const response = await fetch("/moves.json");
+    const data = await response.json();
+
+    const { size, offsetX, offsetY } = gridInfo;
+
+    data.forEach((entry: any) => {
+      const { row, column } = entry.move.coordinates;
+      const key = entry.move.elementDefinitionName;
+      const rotation = rotationMap[entry.move.rotation] ?? 0;
+
+      const image = sceneInstance.add.image(
+        offsetX + (column - 1) * size + size / 2,
+        offsetY + (row - 1) * size + size / 2,
+        key
+      ).setDisplaySize(size * 0.95, size * 0.95);
+
+      image.setRotation(rotation);
+    });
+  };
+
+  return (
+    <div style={{ display: "flex", height: "90vh" }}>
+      <div
+        ref={gameContainerRef}
+        style={{
+          flex: 1,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      />
+      <div
+        style={{
+          width: "220px",
+          padding: "20px",
+          background: "#222",
+          color: "#fff",
+          textAlign: "center",
+        }}
+      >
+        <button
+          onClick={handleFillGridFromFile}
+          style={{
+            padding: "10px 20px",
+            backgroundColor: "#444",
+            color: "#fff",
+            border: "none",
+            borderRadius: "8px",
+            cursor: "pointer",
+            width: "100%",
+          }}
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          Wypełnij pole gry
+        </button>
+      </div>
     </div>
   );
 }

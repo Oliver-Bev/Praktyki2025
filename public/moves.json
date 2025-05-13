@@ -1,0 +1,1333 @@
+[
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 6,
+        "column": 6
+      },
+      "elementDefinitionName": "river_train_bridge"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 5,
+        "column": 6
+      },
+      "elementDefinitionName": "train_road_bridge"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 6,
+        "column": 5
+      },
+      "elementDefinitionName": "river"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 4,
+        "column": 6
+      },
+      "elementDefinitionName": "train"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 3,
+        "column": 6
+      },
+      "elementDefinitionName": "train_station"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 6,
+        "column": 4
+      },
+      "elementDefinitionName": "river_port"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 6,
+        "column": 7
+      },
+      "elementDefinitionName": "river_walk_bridge"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 6,
+        "column": 3
+      },
+      "elementDefinitionName": "river_bridge"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ZERO",
+      "coordinates": {
+        "row": 2,
+        "column": 6
+      },
+      "elementDefinitionName": "train"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 7,
+        "column": 6
+      },
+      "elementDefinitionName": "train_walk_bridge"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ZERO",
+      "coordinates": {
+        "row": 8,
+        "column": 6
+      },
+      "elementDefinitionName": "train_walk_bridge"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 1,
+        "column": 6
+      },
+      "elementDefinitionName": "train"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 6,
+        "column": 8
+      },
+      "elementDefinitionName": "river_port"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 9,
+        "column": 6
+      },
+      "elementDefinitionName": "train"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 6,
+        "column": 2
+      },
+      "elementDefinitionName": "river_bridge"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 6,
+        "column": 1
+      },
+      "elementDefinitionName": "river"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 6,
+        "column": 9
+      },
+      "elementDefinitionName": "river"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 6,
+        "column": 10
+      },
+      "elementDefinitionName": "river"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 10,
+        "column": 6
+      },
+      "elementDefinitionName": "train_station"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 11,
+        "column": 6
+      },
+      "elementDefinitionName": "train_road_bridge"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 6,
+        "column": 11
+      },
+      "elementDefinitionName": "river_walk_bridge"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ZERO",
+      "coordinates": {
+        "row": 7,
+        "column": 3
+      },
+      "elementDefinitionName": "intersection"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 4,
+        "column": 5
+      },
+      "elementDefinitionName": "buildings"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 5,
+        "column": 10
+      },
+      "elementDefinitionName": "buildings"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 5,
+        "column": 4
+      },
+      "elementDefinitionName": "buildings"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 9,
+        "column": 7
+      },
+      "elementDefinitionName": "turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 2,
+        "column": 7
+      },
+      "elementDefinitionName": "road"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 11,
+        "column": 5
+      },
+      "elementDefinitionName": "bridge"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 5,
+        "column": 3
+      },
+      "elementDefinitionName": "turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 7,
+        "column": 4
+      },
+      "elementDefinitionName": "turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 10,
+        "column": 5
+      },
+      "elementDefinitionName": "parking"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 7,
+        "column": 11
+      },
+      "elementDefinitionName": "turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ZERO",
+      "coordinates": {
+        "row": 8,
+        "column": 11
+      },
+      "elementDefinitionName": "intersection"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ZERO",
+      "coordinates": {
+        "row": 4,
+        "column": 7
+      },
+      "elementDefinitionName": "turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 5,
+        "column": 11
+      },
+      "elementDefinitionName": "buildings"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 7,
+        "column": 8
+      },
+      "elementDefinitionName": "double_turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 5,
+        "column": 2
+      },
+      "elementDefinitionName": "bridge"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 9,
+        "column": 8
+      },
+      "elementDefinitionName": "road"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ZERO",
+      "coordinates": {
+        "row": 9,
+        "column": 9
+      },
+      "elementDefinitionName": "bridge"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 7,
+        "column": 2
+      },
+      "elementDefinitionName": "double_turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 8,
+        "column": 3
+      },
+      "elementDefinitionName": "bridge"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 9,
+        "column": 11
+      },
+      "elementDefinitionName": "partial_intersection"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 11,
+        "column": 7
+      },
+      "elementDefinitionName": "bridge"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 8,
+        "column": 10
+      },
+      "elementDefinitionName": "turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 4,
+        "column": 3
+      },
+      "elementDefinitionName": "buildings"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 8,
+        "column": 2
+      },
+      "elementDefinitionName": "intersection"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 10,
+        "column": 9
+      },
+      "elementDefinitionName": "double_turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 5,
+        "column": 8
+      },
+      "elementDefinitionName": "turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 8,
+        "column": 8
+      },
+      "elementDefinitionName": "partial_intersection"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ZERO",
+      "coordinates": {
+        "row": 9,
+        "column": 2
+      },
+      "elementDefinitionName": "double_turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 7,
+        "column": 10
+      },
+      "elementDefinitionName": "road"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ZERO",
+      "coordinates": {
+        "row": 8,
+        "column": 1
+      },
+      "elementDefinitionName": "bridge"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 11,
+        "column": 4
+      },
+      "elementDefinitionName": "turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 10,
+        "column": 2
+      },
+      "elementDefinitionName": "intersection"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ZERO",
+      "coordinates": {
+        "row": 5,
+        "column": 1
+      },
+      "elementDefinitionName": "turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 10,
+        "column": 1
+      },
+      "elementDefinitionName": "double_turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 11,
+        "column": 8
+      },
+      "elementDefinitionName": "road_parkings"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 9,
+        "column": 3
+      },
+      "elementDefinitionName": "double_turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 2,
+        "column": 8
+      },
+      "elementDefinitionName": "buildings_metro"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 11,
+        "column": 1
+      },
+      "elementDefinitionName": "bridge"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ZERO",
+      "coordinates": {
+        "row": 7,
+        "column": 9
+      },
+      "elementDefinitionName": "partial_intersection"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 4,
+        "column": 2
+      },
+      "elementDefinitionName": "parking"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 1,
+        "column": 8
+      },
+      "elementDefinitionName": "parking"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 2,
+        "column": 9
+      },
+      "elementDefinitionName": "road_parkings"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 5,
+        "column": 9
+      },
+      "elementDefinitionName": "parking"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 2,
+        "column": 5
+      },
+      "elementDefinitionName": "parking"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 10,
+        "column": 3
+      },
+      "elementDefinitionName": "intersection"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ZERO",
+      "coordinates": {
+        "row": 4,
+        "column": 8
+      },
+      "elementDefinitionName": "intersection"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 9,
+        "column": 4
+      },
+      "elementDefinitionName": "double_turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 2,
+        "column": 10
+      },
+      "elementDefinitionName": "buildings"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 1,
+        "column": 9
+      },
+      "elementDefinitionName": "intersection"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ZERO",
+      "coordinates": {
+        "row": 4,
+        "column": 11
+      },
+      "elementDefinitionName": "parking"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 4,
+        "column": 1
+      },
+      "elementDefinitionName": "partial_intersection"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ZERO",
+      "coordinates": {
+        "row": 9,
+        "column": 1
+      },
+      "elementDefinitionName": "double_turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 3,
+        "column": 10
+      },
+      "elementDefinitionName": "road_crosswalk"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ZERO",
+      "coordinates": {
+        "row": 2,
+        "column": 11
+      },
+      "elementDefinitionName": "road_tunel"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 10,
+        "column": 10
+      },
+      "elementDefinitionName": "bridge"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 4,
+        "column": 9
+      },
+      "elementDefinitionName": "turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 3,
+        "column": 1
+      },
+      "elementDefinitionName": "double_turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ZERO",
+      "coordinates": {
+        "row": 8,
+        "column": 5
+      },
+      "elementDefinitionName": "buildings"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 5,
+        "column": 7
+      },
+      "elementDefinitionName": "road_parkings"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 3,
+        "column": 3
+      },
+      "elementDefinitionName": "parking"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 11,
+        "column": 10
+      },
+      "elementDefinitionName": "partial_intersection"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 3,
+        "column": 4
+      },
+      "elementDefinitionName": "bridge"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ZERO",
+      "coordinates": {
+        "row": 2,
+        "column": 1
+      },
+      "elementDefinitionName": "intersection"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 9,
+        "column": 10
+      },
+      "elementDefinitionName": "intersection"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ZERO",
+      "coordinates": {
+        "row": 11,
+        "column": 2
+      },
+      "elementDefinitionName": "double_turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 4,
+        "column": 10
+      },
+      "elementDefinitionName": "parking"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 7,
+        "column": 5
+      },
+      "elementDefinitionName": "buildings"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 9,
+        "column": 5
+      },
+      "elementDefinitionName": "road_tunel"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 1,
+        "column": 1
+      },
+      "elementDefinitionName": "double_turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 1,
+        "column": 10
+      },
+      "elementDefinitionName": "partial_intersection"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 1,
+        "column": 2
+      },
+      "elementDefinitionName": "intersection"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 1,
+        "column": 3
+      },
+      "elementDefinitionName": "bridge"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 3,
+        "column": 7
+      },
+      "elementDefinitionName": "road_parkings"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 2,
+        "column": 2
+      },
+      "elementDefinitionName": "double_turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ZERO",
+      "coordinates": {
+        "row": 3,
+        "column": 5
+      },
+      "elementDefinitionName": "parking"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ZERO",
+      "coordinates": {
+        "row": 10,
+        "column": 11
+      },
+      "elementDefinitionName": "partial_intersection"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 4,
+        "column": 4
+      },
+      "elementDefinitionName": "parking"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 2,
+        "column": 4
+      },
+      "elementDefinitionName": "partial_intersection"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ZERO",
+      "coordinates": {
+        "row": 11,
+        "column": 11
+      },
+      "elementDefinitionName": "bridge"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 1,
+        "column": 4
+      },
+      "elementDefinitionName": "double_turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 1,
+        "column": 11
+      },
+      "elementDefinitionName": "partial_intersection"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ZERO",
+      "coordinates": {
+        "row": 8,
+        "column": 7
+      },
+      "elementDefinitionName": "turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ZERO",
+      "coordinates": {
+        "row": 10,
+        "column": 7
+      },
+      "elementDefinitionName": "road_parkings"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 1,
+        "column": 7
+      },
+      "elementDefinitionName": "road_crosswalk"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 8,
+        "column": 9
+      },
+      "elementDefinitionName": "partial_intersection"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 7,
+        "column": 7
+      },
+      "elementDefinitionName": "turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 10,
+        "column": 8
+      },
+      "elementDefinitionName": "parking"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 3,
+        "column": 8
+      },
+      "elementDefinitionName": "parking"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 3,
+        "column": 11
+      },
+      "elementDefinitionName": "turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 2,
+        "column": 3
+      },
+      "elementDefinitionName": "partial_intersection"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 5,
+        "column": 5
+      },
+      "elementDefinitionName": "parking"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 7,
+        "column": 1
+      },
+      "elementDefinitionName": "turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 1,
+        "column": 5
+      },
+      "elementDefinitionName": "partial_intersection"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 11,
+        "column": 9
+      },
+      "elementDefinitionName": "partial_intersection"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 10,
+        "column": 4
+      },
+      "elementDefinitionName": "turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ONE",
+      "coordinates": {
+        "row": 11,
+        "column": 3
+      },
+      "elementDefinitionName": "partial_intersection"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "ZERO",
+      "coordinates": {
+        "row": 3,
+        "column": 9
+      },
+      "elementDefinitionName": "turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "THREE",
+      "coordinates": {
+        "row": 3,
+        "column": 2
+      },
+      "elementDefinitionName": "turn"
+    },
+    "type": "MAKE_MOVE"
+  },
+  {
+    "move": {
+      "rotation": "TWO",
+      "coordinates": {
+        "row": 8,
+        "column": 4
+      },
+      "elementDefinitionName": "turn"
+    },
+    "type": "MAKE_MOVE"
+  }
+]
