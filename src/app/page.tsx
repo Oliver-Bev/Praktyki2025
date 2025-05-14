@@ -112,7 +112,7 @@ export default function Home() {
                 size,
                 size,
                 0x000000
-              ).setStrokeStyle(0.5, 0xffffff).setDepth(2);
+              ).setStrokeStyle(0.7, 0xffffff).setDepth(2);
             }
           }
 
@@ -158,7 +158,7 @@ export default function Home() {
   offsetX + (column - 1) * size + size / 2,
   offsetY + (row - 1) * size + size / 2,
   key
-).setDisplaySize(size * 0.97, size * 0.97).setDepth(5);
+).setDisplaySize(size * 0.985, size * 0.985).setDepth(5);
 
 
       image.setRotation(rotation);
@@ -192,12 +192,9 @@ export default function Home() {
           gap: "12px",
         }}
       >
-        <button style={buttonStyle}>Nowa gra - z generowaniem planszy</button>
+        <button onClick={handleFillGridFromFile} style={buttonStyle}>Nowa gra - z generowaniem planszy</button>
         <button style={buttonStyle}>Nowa gra - z budowaniem planszy</button>
         <button style={buttonStyle}>Reset gry</button>
-        <button onClick={handleFillGridFromFile} style={buttonStyle}>
-          Wypełnij pole gry
-        </button>
       </div>
     </div>
   );
