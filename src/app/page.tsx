@@ -61,6 +61,66 @@ export default function Home() {
   const gridRef = useRef<{ size: number; offsetX: number; offsetY: number } | null>(null)
   const pawnRef = useRef<Phaser.GameObjects.Image | null>(null)
   const [gameLoaded, setGameLoaded] = useState(false)
+  const [pawnPosition, setPawnPosition] = useState({ row: 6, col: 6 }) // Środek planszy (6,6)
+  const [canMove, setCanMove] = useState(false)
+
+  // Funkcja do poruszania pionkiem
+  const movePawn = (direction: "up" | "down" | "left" | "right") => {
+    if (!canMove) return
+
+    const newPosition = { ...pawnPosition }
+
+    switch (direction) {
+      case "up":
+        if (newPosition.row > 1) newPosition.row -= 1
+        break
+      case "down":
+        if (newPosition.row < 11) newPosition.row += 1
+        break
+      case "left":
+        if (newPosition.col > 1) newPosition.col -= 1
+        break
+      case "right":
+        if (newPosition.col < 11) newPosition.col += 1
+        break
+    }
+
+    setPawnPosition(newPosition)
+
+    // Aktualizuj pozycję pionka na planszy
+    placePawnAtPosition(newPosition.row, newPosition.col)
+  }
+
+  // Funkcja do umieszczania pionka na określonej pozycji
+  const placePawnAtPosition = (row: number, col: number) => {
+    const scene = sceneRef.current
+    const grid = gridRef.current
+    if (!scene || !grid) return
+
+    const { size, offsetX, offsetY } = grid
+    const x = offsetX + (col - 1) * size + size / 2
+    const y = offsetY + (row - 1) * size + size / 2
+
+    if (pawnRef.current) {
+      pawnRef.current.setPosition(x, y)
+    } else {
+      // Jeśli pionek jeszcze nie istnieje, stwórz go
+      try {
+        pawnRef.current = scene.add
+          .image(x, y, "samochod")
+          .setDisplaySize(size * 0.5, size * 0.5)
+          .setDepth(1000)
+      } catch (error) {
+        console.error("Błąd podczas dodawania pionka:", error)
+      }
+    }
+  }
+
+  // Funkcja inicjująca pionek na środku planszy
+  const initPawnInCenter = () => {
+    setCanMove(true)
+    placePawnAtPosition(6, 6) // Środek planszy (6,6)
+  }
 
   useEffect(() => {
     const loadPhaserAndInitGame = async () => {
@@ -74,12 +134,10 @@ export default function Home() {
         }
 
         preload() {
-
           this.load.on("complete", () => {
             console.log("Wszystkie zasoby załadowane!")
             setGameLoaded(true)
           })
-
 
           tileKeys.forEach((key) => {
             this.load.image(key, `/img/${key}.png`)
@@ -136,7 +194,6 @@ export default function Home() {
             }
           }
 
- 
           console.log("Dostępne tekstury:", this.textures.list)
         }
       }
@@ -155,6 +212,31 @@ export default function Home() {
 
     loadPhaserAndInitGame()
   }, [])
+
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      switch (e.key) {
+        case "ArrowUp":
+          movePawn("up")
+          break
+        case "ArrowDown":
+          movePawn("down")
+          break
+        case "ArrowLeft":
+          movePawn("left")
+          break
+        case "ArrowRight":
+          movePawn("right")
+          break
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown)
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [canMove, pawnPosition])
 
   const handleFillGridFromFile = async () => {
     const scene = sceneRef.current
@@ -181,7 +263,6 @@ export default function Home() {
             .setDepth(10)
         })
       } else if (data.moves && Array.isArray(data.moves)) {
-
         data.moves.forEach(({ move }) => {
           const { row, column } = move.coordinates
           const texture = move.elementDefinitionName
@@ -214,7 +295,6 @@ export default function Home() {
 
     console.log("Umieszczanie pionka z ID:", id)
 
-
     const parts = id.split("_")
     if (parts.length < 2) {
       console.error("Nieprawidłowy format ID:", id)
@@ -222,9 +302,8 @@ export default function Home() {
     }
 
     const layer = parts[0]
-    const coordPart = parts[1] 
+    const coordPart = parts[1]
 
- 
     const rowMatch = coordPart.match(/R(\d+)/)
     const colMatch = coordPart.match(/C(\d+)/)
 
@@ -236,32 +315,28 @@ export default function Home() {
     const row = Number.parseInt(rowMatch[1])
     const col = Number.parseInt(colMatch[1])
 
-
     const quarter = parts.length > 2 ? parts[2] : null
-
 
     const subQuarter = parts.length > 3 ? parts[3] : null
 
     const { size, offsetX, offsetY } = grid
 
-    
     let x = offsetX + (col - 1) * size + size / 2
     let y = offsetY + (row - 1) * size + size / 2
 
-   
     if (quarter && quarter !== "null") {
       const shift = size / 4
 
       switch (quarter) {
-        case "TL": 
+        case "TL":
           x -= shift
           y -= shift
           break
-        case "TR": 
+        case "TR":
           x += shift
           y -= shift
           break
-        case "BL": 
+        case "BL":
           x -= shift
           y += shift
           break
@@ -272,12 +347,11 @@ export default function Home() {
       }
     }
 
-    
     if (subQuarter && subQuarter !== "null") {
       const subShift = size / 8
 
       switch (subQuarter) {
-        case "TL": 
+        case "TL":
           x -= subShift
           y -= subShift
           break
@@ -285,7 +359,7 @@ export default function Home() {
           x += subShift
           y -= subShift
           break
-        case "BL": 
+        case "BL":
           x -= subShift
           y += subShift
           break
@@ -296,15 +370,12 @@ export default function Home() {
       }
     }
 
-   
     if (pawnRef.current) {
       pawnRef.current.destroy()
     }
 
- 
-    const texture = pawnTextures[layer] || "pieszy"
+    const texture = pawnTextures[layer] || "samochod"
     console.log(`Używam tekstury: ${texture} dla warstwy: ${layer}`)
-
 
     if (!scene.textures.exists(texture)) {
       console.error(`Tekstura ${texture} nie istnieje!`)
@@ -312,7 +383,6 @@ export default function Home() {
       return
     }
 
- 
     try {
       pawnRef.current = scene.add
         .image(x, y, texture)
@@ -348,8 +418,32 @@ export default function Home() {
         <button onClick={() => placePawnByGraphId("SIDEWALKS_R6C6_TL_null")} style={buttonStyle} disabled={!gameLoaded}>
           Test pionka
         </button>
+        <button onClick={initPawnInCenter} style={buttonStyle} disabled={!gameLoaded}>
+          Umieść auto na środku
+        </button>
         <div style={{ marginTop: "20px", fontSize: "12px", color: "#aaa" }}>
           Status: {gameLoaded ? "Gra gotowa" : "Ładowanie..."}
+        </div>
+        <div style={{ marginTop: "20px", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "5px" }}>
+          <div></div>
+          <button onClick={() => movePawn("up")} style={{ ...buttonStyle, fontSize: "18px" }} disabled={!canMove}>
+            ↑
+          </button>
+          <div></div>
+
+          <button onClick={() => movePawn("left")} style={{ ...buttonStyle, fontSize: "18px" }} disabled={!canMove}>
+            ←
+          </button>
+          <div></div>
+          <button onClick={() => movePawn("right")} style={{ ...buttonStyle, fontSize: "18px" }} disabled={!canMove}>
+            →
+          </button>
+
+          <div></div>
+          <button onClick={() => movePawn("down")} style={{ ...buttonStyle, fontSize: "18px" }} disabled={!canMove}>
+            ↓
+          </button>
+          <div></div>
         </div>
       </div>
     </div>
