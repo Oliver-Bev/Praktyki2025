@@ -46,13 +46,7 @@ const rotationMap: Record<string, number> = {
   THREE: (3 * Math.PI) / 2,
 }
 
-type MoveEntry = {
-  move: {
-    rotation: keyof typeof rotationMap
-    coordinates: { row: number; column: number }
-    elementDefinitionName: string
-  }
-}
+
 
 // --- KOMPONENT ---
 export default function Home() {
@@ -213,7 +207,7 @@ export default function Home() {
     loadPhaserAndInitGame()
   }, [])
 
-
+  
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       switch (e.key) {
@@ -236,7 +230,7 @@ export default function Home() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown)
     }
-  }, [canMove, pawnPosition])
+  }, [canMove, pawnPosition]) 
 
   const handleFillGridFromFile = async () => {
     const scene = sceneRef.current
@@ -256,7 +250,8 @@ export default function Home() {
           const x = grid.offsetX + (column - 1) * grid.size + grid.size / 2
           const y = grid.offsetY + (row - 1) * grid.size + grid.size / 2
 
-          const image = scene.add
+     
+          scene.add
             .image(x, y, texture)
             .setDisplaySize(grid.size * 0.985, grid.size * 0.985)
             .setRotation(rotation)
@@ -271,7 +266,8 @@ export default function Home() {
           const x = grid.offsetX + (column - 1) * grid.size + grid.size / 2
           const y = grid.offsetY + (row - 1) * grid.size + grid.size / 2
 
-          const image = scene.add
+   
+          scene.add
             .image(x, y, texture)
             .setDisplaySize(grid.size * 0.985, grid.size * 0.985)
             .setRotation(rotation)
@@ -374,7 +370,7 @@ export default function Home() {
       pawnRef.current.destroy()
     }
 
-    const texture = pawnTextures[layer] || "samochod"
+    const texture = pawnTextures[layer] || "pieszy"
     console.log(`Używam tekstury: ${texture} dla warstwy: ${layer}`)
 
     if (!scene.textures.exists(texture)) {
