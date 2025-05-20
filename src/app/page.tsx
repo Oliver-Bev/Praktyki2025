@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useCallback } from "react"
 import type Phaser from "phaser"
 
 // --- KONFIGURACJA ---
@@ -46,7 +46,24 @@ const rotationMap: Record<string, number> = {
   THREE: (3 * Math.PI) / 2,
 }
 
+interface Coordinates {
+  row: number
+  column: number
+}
 
+interface MoveData {
+  coordinates: Coordinates
+  elementDefinitionName: string
+  rotation: string
+}
+
+interface Move {
+  move: MoveData
+}
+
+interface MovesResponse {
+  moves?: Move[]
+}
 
 // --- KOMPONENT ---
 export default function Home() {
@@ -59,34 +76,37 @@ export default function Home() {
   const [canMove, setCanMove] = useState(false)
 
   // Funkcja do poruszania pionkiem
-  const movePawn = (direction: "up" | "down" | "left" | "right") => {
-    if (!canMove) return
+  const movePawn = useCallback(
+    (direction: "up" | "down" | "left" | "right") => {
+      if (!canMove) return
 
-    const newPosition = { ...pawnPosition }
+      const newPosition = { ...pawnPosition }
 
-    switch (direction) {
-      case "up":
-        if (newPosition.row > 1) newPosition.row -= 1
-        break
-      case "down":
-        if (newPosition.row < 11) newPosition.row += 1
-        break
-      case "left":
-        if (newPosition.col > 1) newPosition.col -= 1
-        break
-      case "right":
-        if (newPosition.col < 11) newPosition.col += 1
-        break
-    }
+      switch (direction) {
+        case "up":
+          if (newPosition.row > 1) newPosition.row -= 1
+          break
+        case "down":
+          if (newPosition.row < 11) newPosition.row += 1
+          break
+        case "left":
+          if (newPosition.col > 1) newPosition.col -= 1
+          break
+        case "right":
+          if (newPosition.col < 11) newPosition.col += 1
+          break
+      }
 
-    setPawnPosition(newPosition)
+      setPawnPosition(newPosition)
 
-    // Aktualizuj pozycję pionka na planszy
-    placePawnAtPosition(newPosition.row, newPosition.col)
-  }
+      // Aktualizuj pozycję pionka na planszy
+      placePawnAtPosition(newPosition.row, newPosition.col)
+    },
+    [canMove, pawnPosition],
+  )
 
   // Funkcja do umieszczania pionka na określonej pozycji
-  const placePawnAtPosition = (row: number, col: number) => {
+  const placePawnAtPosition = useCallback((row: number, col: number) => {
     const scene = sceneRef.current
     const grid = gridRef.current
     if (!scene || !grid) return
@@ -108,13 +128,12 @@ export default function Home() {
         console.error("Błąd podczas dodawania pionka:", error)
       }
     }
-  }
+  }, [])
 
-  // Funkcja inicjująca pionek na środku planszy
-  const initPawnInCenter = () => {
+  const initPawnInCenter = useCallback(() => {
     setCanMove(true)
     placePawnAtPosition(6, 6) // Środek planszy (6,6)
-  }
+  }, [placePawnAtPosition])
 
   useEffect(() => {
     const loadPhaserAndInitGame = async () => {
@@ -207,30 +226,7 @@ export default function Home() {
     loadPhaserAndInitGame()
   }, [])
 
-  
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      switch (e.key) {
-        case "ArrowUp":
-          movePawn("up")
-          break
-        case "ArrowDown":
-          movePawn("down")
-          break
-        case "ArrowLeft":
-          movePawn("left")
-          break
-        case "ArrowRight":
-          movePawn("right")
-          break
-      }
-    }
-
-    window.addEventListener("keydown", handleKeyDown)
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown)
-    }
-  }, [canMove, pawnPosition]) 
+ 
 
   const handleFillGridFromFile = async () => {
     const scene = sceneRef.current
@@ -239,10 +235,10 @@ export default function Home() {
 
     try {
       const response = await fetch("/moves.json")
-      const data = await response.json()
+      const data = (await response.json()) as Move[] | MovesResponse
 
       if (Array.isArray(data)) {
-        data.forEach(({ move }) => {
+        data.forEach(({ move }: Move) => {
           const { row, column } = move.coordinates
           const texture = move.elementDefinitionName
           const rotation = rotationMap[move.rotation] ?? 0
@@ -250,7 +246,6 @@ export default function Home() {
           const x = grid.offsetX + (column - 1) * grid.size + grid.size / 2
           const y = grid.offsetY + (row - 1) * grid.size + grid.size / 2
 
-     
           scene.add
             .image(x, y, texture)
             .setDisplaySize(grid.size * 0.985, grid.size * 0.985)
@@ -258,7 +253,7 @@ export default function Home() {
             .setDepth(10)
         })
       } else if (data.moves && Array.isArray(data.moves)) {
-        data.moves.forEach(({ move }) => {
+        data.moves.forEach(({ move }: Move) => {
           const { row, column } = move.coordinates
           const texture = move.elementDefinitionName
           const rotation = rotationMap[move.rotation] ?? 0
@@ -266,7 +261,6 @@ export default function Home() {
           const x = grid.offsetX + (column - 1) * grid.size + grid.size / 2
           const y = grid.offsetY + (row - 1) * grid.size + grid.size / 2
 
-   
           scene.add
             .image(x, y, texture)
             .setDisplaySize(grid.size * 0.985, grid.size * 0.985)
@@ -280,8 +274,6 @@ export default function Home() {
       console.error("Błąd podczas ładowania pliku moves:", error)
     }
   }
-
-
 
   const placePawnByGraphId = (id: string) => {
     const scene = sceneRef.current
@@ -324,8 +316,6 @@ export default function Home() {
 
     if (quarter && quarter !== "null") {
       const shift = size / 4
-
-
 
       switch (quarter) {
         case "TL":
