@@ -277,9 +277,11 @@ export default function Home() {
         console.error("Nieprawidłowy format danych:", data)
       }
     } catch (error) {
-      console.error("Błąd podczas ładowania pliku moves.json:", error)
+      console.error("Błąd podczas ładowania pliku moves:", error)
     }
   }
+
+
 
   const placePawnByGraphId = (id: string) => {
     const scene = sceneRef.current
@@ -322,6 +324,8 @@ export default function Home() {
 
     if (quarter && quarter !== "null") {
       const shift = size / 4
+
+
 
       switch (quarter) {
         case "TL":
