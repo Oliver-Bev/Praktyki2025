@@ -95,7 +95,7 @@ export default function Home() {
   const [currentLayer, setCurrentLayer] = useState<string>("SIDEWALKS")
   const [availableNodes, setAvailableNodes] = useState<string[]>([])
   const [debugInfo, setDebugInfo] = useState<string[]>([])
-  const [bidirectionalGraph, setBidirectionalGraph] = useState<boolean>(true)
+  const [bidirectionalGraph] = useState<boolean>(true)
 
   // Dodaj komunikat
   const addDebugMessage = useCallback((message: string) => {
