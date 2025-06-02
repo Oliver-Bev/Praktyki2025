@@ -87,7 +87,7 @@ export default function Home() {
   const gridRef = useRef<{ size: number; offsetX: number; offsetY: number } | null>(null)
   const pawnRef = useRef<Phaser.GameObjects.Image | null>(null)
   const [gameLoaded, setGameLoaded] = useState(false)
-  const [pawnPosition, setPawnPosition] = useState({ row: 6, col: 6 }) // Środek planszy
+  const [pawnPosition, setPawnPosition] = useState({ row: 6, col: 6 })
   const [canMove, setCanMove] = useState(false)
   const [graph, setGraph] = useState<Graph | null>(null)
   const [currentNodeId, setCurrentNodeId] = useState<string | null>(null)
@@ -96,14 +96,26 @@ export default function Home() {
   const [availableNodes, setAvailableNodes] = useState<string[]>([])
   const [debugInfo, setDebugInfo] = useState<string[]>([])
   const [bidirectionalGraph] = useState<boolean>(true)
+  const [gameMessage, setGameMessage] = useState<string>("")
 
   // Dodaj komunikat
   const addDebugMessage = useCallback((message: string) => {
     setDebugInfo((prev) => {
       const newMessages = [message, ...prev]
-      return newMessages.slice(0, 10) // Tylko 10 ostatnich
+      return newMessages.slice(0, 10)
     })
   }, [])
+
+  // Dodaj komunikat gry
+  const showGameMessage = useCallback(
+    (message: string) => {
+      setGameMessage(message)
+      addDebugMessage(message)
+      // Ukryj komunikat po 3 sekundach
+      setTimeout(() => setGameMessage(""), 3000)
+    },
+    [addDebugMessage],
+  )
 
   // Ładuj graf
   useEffect(() => {
@@ -122,7 +134,6 @@ export default function Home() {
 
     loadGraph()
   }, [addDebugMessage])
-
 
   const parseNodeId = useCallback((id: string) => {
     const parts = id.split("_")
@@ -146,7 +157,7 @@ export default function Home() {
     return { layer, row, col, quarter, subQuarter }
   }, [])
 
-  // Umieść pionek
+  // Umieść pionek - DOKŁADNIE ORYGINALNA WERSJA
   const placePawnByGraphId = useCallback(
     (id: string) => {
       const scene = sceneRef.current
@@ -258,11 +269,14 @@ export default function Home() {
     [parseNodeId, addDebugMessage],
   )
 
-  // Aktualizuj dostępne Ruchy 
+  // Aktualizuj dostępne ruchy
   useEffect(() => {
-    if (!graph || !currentNodeId) return
+    if (!graph || !currentNodeId) {
+      setAvailableNodes([])
+      return
+    }
 
-    // Pobierz połączone Ruchy 
+    // Pobierz połączone węzły
     let connectedNodes: string[] = []
 
     // Połączenia wychodzące
@@ -280,46 +294,74 @@ export default function Home() {
     // Usuń duplikaty
     connectedNodes = [...new Set(connectedNodes)]
 
-    setAvailableNodes(connectedNodes)
-    console.log("Dostępne Ruchy :", connectedNodes)
-    addDebugMessage(`Znaleziono ${connectedNodes.length} ruchów`)
+    // Filtruj tylko istniejące węzły
+    const validNodes = connectedNodes.filter((nodeId) => graph.nodes.some((node) => node.id === nodeId))
+
+    setAvailableNodes(validNodes)
+    console.log("Dostępne ruchy:", validNodes)
+    addDebugMessage(`Znaleziono ${validNodes.length} ruchów`)
   }, [graph, currentNodeId, bidirectionalGraph, addDebugMessage])
 
   // Znajdź ruch w kierunku
   const getNodeInDirection = useCallback(
     (direction: "up" | "down" | "left" | "right") => {
-      if (!currentNodeId || !availableNodes.length) return null
+      if (!currentNodeId || !availableNodes.length) {
+        addDebugMessage(`Brak ruchów: currentNodeId=${currentNodeId}, availableNodes=${availableNodes.length}`)
+        return null
+      }
 
-      // Informacje o bieżącym
+      // Informacje o bieżącym węźle
       const currentInfo = parseNodeId(currentNodeId)
-      if (!currentInfo) return null
+      if (!currentInfo) {
+        addDebugMessage("Nie można sparsować bieżącego węzła")
+        return null
+      }
 
-      // Filtruj wg kierunku
+      // Filtruj węzły wg kierunku i warstwy
       const targetNodes = availableNodes.filter((nodeId) => {
         const nodeInfo = parseNodeId(nodeId)
         if (!nodeInfo) return false
 
-        // Ta sama warstwa
-        const isSameLayer = nodeInfo.layer === currentLayer
+        // Sprawdź czy to ta sama warstwa lub kompatybilna
+        const isCompatibleLayer =
+          nodeInfo.layer === currentLayer ||
+          (currentLayer === "SIDEWALKS" && ["METRO", "TRACKS", "RIVERFERRY", "RIVERBOAT"].includes(nodeInfo.layer)) ||
+          (currentLayer === "ROADS" && ["TUNEL", "OBJECTS"].includes(nodeInfo.layer))
 
-        // Sprawdź kierunek
+        if (!isCompatibleLayer) return false
+
+        // Sprawdź kierunek z tolerancją
+        const rowDiff = nodeInfo.row - currentInfo.row
+        const colDiff = nodeInfo.col - currentInfo.col
+
         switch (direction) {
           case "up":
-            return nodeInfo.row < currentInfo.row && isSameLayer
+            return rowDiff < 0 && Math.abs(colDiff) <= Math.abs(rowDiff)
           case "down":
-            return nodeInfo.row > currentInfo.row && isSameLayer
+            return rowDiff > 0 && Math.abs(colDiff) <= Math.abs(rowDiff)
           case "left":
-            return nodeInfo.col < currentInfo.col && isSameLayer
+            return colDiff < 0 && Math.abs(rowDiff) <= Math.abs(colDiff)
           case "right":
-            return nodeInfo.col > currentInfo.col && isSameLayer
+            return colDiff > 0 && Math.abs(rowDiff) <= Math.abs(colDiff)
           default:
             return false
         }
       })
 
-      console.log(`Ruchyw kierunku ${direction}:`, targetNodes)
-      addDebugMessage(`Znaleziono ${targetNodes.length} w kierunku ${direction}`)
-      return targetNodes.length > 0 ? targetNodes[0] : null
+      // Sortuj po odległości
+      const sortedNodes = targetNodes.sort((a, b) => {
+        const aInfo = parseNodeId(a)
+        const bInfo = parseNodeId(b)
+        if (!aInfo || !bInfo) return 0
+
+        const aDist = Math.abs(aInfo.row - currentInfo.row) + Math.abs(aInfo.col - currentInfo.col)
+        const bDist = Math.abs(bInfo.row - currentInfo.row) + Math.abs(aInfo.col - currentInfo.col)
+        return aDist - bDist
+      })
+
+      console.log(`Ruchy w kierunku ${direction}:`, sortedNodes)
+      addDebugMessage(`Znaleziono ${sortedNodes.length} w kierunku ${direction}`)
+      return sortedNodes.length > 0 ? sortedNodes[0] : null
     },
     [currentNodeId, availableNodes, currentLayer, parseNodeId, addDebugMessage],
   )
@@ -336,9 +378,16 @@ export default function Home() {
       if (targetNodeId) {
         console.log(`Ruch ${direction} do:`, targetNodeId)
         addDebugMessage(`Ruch ${direction} do: ${targetNodeId}`)
-        setCurrentNodeId(targetNodeId)
 
-        //aktualizacja wizualna
+        // Sprawdź czy to zmiana warstwy
+        const currentInfo = parseNodeId(currentNodeId!)
+        const targetInfo = parseNodeId(targetNodeId)
+
+        if (currentInfo && targetInfo && currentInfo.layer !== targetInfo.layer) {
+          showGameMessage(`Zmiana warstwy: ${currentInfo.layer} → ${targetInfo.layer}`)
+        }
+
+        setCurrentNodeId(targetNodeId)
         placePawnByGraphId(targetNodeId)
 
         const nodeInfo = parseNodeId(targetNodeId)
@@ -350,7 +399,16 @@ export default function Home() {
         addDebugMessage(`Brak ruchu w ${direction}`)
       }
     },
-    [canMove, graph, getNodeInDirection, parseNodeId, placePawnByGraphId, addDebugMessage],
+    [
+      canMove,
+      graph,
+      getNodeInDirection,
+      parseNodeId,
+      placePawnByGraphId,
+      addDebugMessage,
+      currentNodeId,
+      showGameMessage,
+    ],
   )
 
   // Wejście/wyjście z budynku
@@ -360,22 +418,50 @@ export default function Home() {
       return
     }
 
-    // Połączone Ruchy 
-    const connectedNodeIds = availableNodes
+    // Pobierz połączone węzły
+    let connectedNodes: string[] = []
 
-    // Filtruj OBJECTS
-    const targetNodes = connectedNodeIds.filter((nodeId) =>
-      isInsideBuilding ? !nodeId.startsWith("OBJECTS") : nodeId.startsWith("OBJECTS"),
-    )
+    // Połączenia wychodzące
+    const outgoingEdges = graph.edges.filter((edge) => edge.source === currentNodeId)
+    const outgoingNodes = outgoingEdges.map((edge) => edge.target)
+    connectedNodes = [...connectedNodes, ...outgoingNodes]
+
+    // Połączenia przychodzące (dwukierunkowe)
+    if (bidirectionalGraph) {
+      const incomingEdges = graph.edges.filter((edge) => edge.target === currentNodeId)
+      const incomingNodes = incomingEdges.map((edge) => edge.source)
+      connectedNodes = [...connectedNodes, ...incomingNodes]
+    }
+
+    // Usuń duplikaty
+    connectedNodes = [...new Set(connectedNodes)]
+
+    // Filtruj tylko istniejące węzły
+    const validNodes = connectedNodes.filter((nodeId) => graph.nodes.some((node) => node.id === nodeId))
+
+    // Filtruj OBJECTS (budynki)
+    const buildingNodes = validNodes.filter((nodeId) => nodeId.startsWith("OBJECTS"))
+    const outsideNodes = validNodes.filter((nodeId) => !nodeId.startsWith("OBJECTS"))
+
+    const targetNodes = isInsideBuilding ? outsideNodes : buildingNodes
 
     if (targetNodes.length > 0) {
+      const targetNodeId = targetNodes[0]
+      const newInsideState = !isInsideBuilding
+
+      // Komunikat o wejściu/wyjściu
+      if (newInsideState) {
+        showGameMessage("🏢 Człowiek wszedł do budynku")
+      } else {
+        showGameMessage("🚶 Człowiek wyszedł z budynku")
+      }
+
       // Zmień stan
-      setIsInsideBuilding((prev) => !prev)
-      console.log(isInsideBuilding ? "Wyjście z budynku" : "Wejście do budynku")
-      addDebugMessage(isInsideBuilding ? "Wyjście z budynku" : "Wejście do budynku")
+      setIsInsideBuilding(newInsideState)
+      console.log(newInsideState ? "Wejście do budynku" : "Wyjście z budynku")
+      addDebugMessage(newInsideState ? "Wejście do budynku" : "Wyjście z budynku")
 
       // Przenieś do pozycji
-      const targetNodeId = targetNodes[0]
       setCurrentNodeId(targetNodeId)
       placePawnByGraphId(targetNodeId)
 
@@ -384,8 +470,10 @@ export default function Home() {
         setPawnPosition({ row: nodeInfo.row, col: nodeInfo.col })
       }
     } else {
-      console.log("Brak budynku")
-      addDebugMessage("Brak budynku")
+      const message = isInsideBuilding ? "Brak wyjścia z budynku" : "Brak budynku w pobliżu"
+      console.log(message)
+      addDebugMessage(message)
+      showGameMessage(message)
     }
   }, [
     canMove,
@@ -395,7 +483,8 @@ export default function Home() {
     parseNodeId,
     placePawnByGraphId,
     addDebugMessage,
-    availableNodes,
+    bidirectionalGraph,
+    showGameMessage,
   ])
 
   // Zmiana warstwy
@@ -405,11 +494,29 @@ export default function Home() {
       return
     }
 
-    // Połączone Ruchy 
-    const connectedNodeIds = availableNodes
+    // Pobierz połączone węzły
+    let connectedNodes: string[] = []
+
+    // Połączenia wychodzące
+    const outgoingEdges = graph.edges.filter((edge) => edge.source === currentNodeId)
+    const outgoingNodes = outgoingEdges.map((edge) => edge.target)
+    connectedNodes = [...connectedNodes, ...outgoingNodes]
+
+    // Połączenia przychodzące (dwukierunkowe)
+    if (bidirectionalGraph) {
+      const incomingEdges = graph.edges.filter((edge) => edge.target === currentNodeId)
+      const incomingNodes = incomingEdges.map((edge) => edge.source)
+      connectedNodes = [...connectedNodes, ...incomingNodes]
+    }
+
+    // Usuń duplikaty
+    connectedNodes = [...new Set(connectedNodes)]
+
+    // Filtruj tylko istniejące węzły
+    const validNodes = connectedNodes.filter((nodeId) => graph.nodes.some((node) => node.id === nodeId))
 
     // Znajdź inne warstwy
-    const differentLayerNodes = connectedNodeIds.filter((nodeId) => {
+    const differentLayerNodes = validNodes.filter((nodeId) => {
       const nodeInfo = parseNodeId(nodeId)
       return nodeInfo && nodeInfo.layer !== currentLayer
     })
@@ -422,16 +529,30 @@ export default function Home() {
       if (nodeInfo) {
         console.log(`Zmiana warstwy z ${currentLayer} na ${nodeInfo.layer}`)
         addDebugMessage(`Zmiana warstwy z ${currentLayer} na ${nodeInfo.layer}`)
+        showGameMessage(`Zmiana warstwy: ${currentLayer} → ${nodeInfo.layer}`)
+
         setCurrentLayer(nodeInfo.layer)
         setCurrentNodeId(targetNodeId)
         placePawnByGraphId(targetNodeId)
         setPawnPosition({ row: nodeInfo.row, col: nodeInfo.col })
       }
     } else {
-      console.log("Brak innych warstw")
-      addDebugMessage("Brak innych warstw")
+      const message = "Brak innych warstw"
+      console.log(message)
+      addDebugMessage(message)
+      showGameMessage(message)
     }
-  }, [canMove, currentNodeId, currentLayer, graph, parseNodeId, placePawnByGraphId, addDebugMessage, availableNodes])
+  }, [
+    canMove,
+    currentNodeId,
+    currentLayer,
+    graph,
+    parseNodeId,
+    placePawnByGraphId,
+    addDebugMessage,
+    bidirectionalGraph,
+    showGameMessage,
+  ])
 
   // Losowy start
   const initRandomPawn = useCallback(() => {
@@ -440,37 +561,31 @@ export default function Home() {
       return
     }
 
-    // Preferowane warstwy
     const preferredLayers = ["SIDEWALKS", "ROADS"]
-
     let validNodes = graph.nodes.filter((node) => {
       const nodeInfo = parseNodeId(node.id)
       return nodeInfo && preferredLayers.includes(nodeInfo.layer)
     })
 
-    // Alternatywne Ruchy 
     if (validNodes.length === 0) {
       validNodes = graph.nodes.filter((node) => !node.id.startsWith("OBJECTS"))
     }
 
     if (validNodes.length === 0) {
-      console.error("Brak ruchów startowych")
-      addDebugMessage("Brak ruchów startowych")
+      console.error("Brak węzłów startowych")
+      addDebugMessage("Brak węzłów startowych")
       return
     }
 
-    // Losowy wybór
     const randomIndex = Math.floor(Math.random() * validNodes.length)
     const randomNodeId = validNodes[randomIndex].id
 
     console.log("Start z pozycji:", randomNodeId)
     addDebugMessage(`Start z pozycji: ${randomNodeId}`)
 
-    // Ustaw ruch i pionek
     setCurrentNodeId(randomNodeId)
     placePawnByGraphId(randomNodeId)
 
-    // Pozycja i warstwa
     const nodeInfo = parseNodeId(randomNodeId)
     if (nodeInfo) {
       setPawnPosition({ row: nodeInfo.row, col: nodeInfo.col })
@@ -481,7 +596,7 @@ export default function Home() {
     addDebugMessage("Pionek gotowy do ruchu")
   }, [graph, gameLoaded, parseNodeId, placePawnByGraphId, addDebugMessage])
 
-  // Inicjalizacja gry
+  // Inicjalizacja gry - DOKŁADNIE ORYGINALNA WERSJA
   useEffect(() => {
     const loadPhaserAndInitGame = async () => {
       const Phaser = await import("phaser")
@@ -579,29 +694,35 @@ export default function Home() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!canMove) {
-        addDebugMessage("Klawisz zignorowany")
+        addDebugMessage("Klawisz zignorowany - brak możliwości ruchu")
         return
       }
 
       switch (e.key) {
         case "ArrowUp":
+          e.preventDefault()
           movePawn("up")
           break
         case "ArrowDown":
+          e.preventDefault()
           movePawn("down")
           break
         case "ArrowLeft":
+          e.preventDefault()
           movePawn("left")
           break
         case "ArrowRight":
+          e.preventDefault()
           movePawn("right")
           break
         case "o":
         case "O":
+          e.preventDefault()
           toggleBuilding()
           break
         case "l":
         case "L":
+          e.preventDefault()
           changeLayer()
           break
       }
@@ -611,7 +732,7 @@ export default function Home() {
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [canMove, movePawn, toggleBuilding, changeLayer, addDebugMessage])
 
-  // Ładuj planszę z pliku
+  // Ładuj planszę z pliku - DOKŁADNIE ORYGINALNA WERSJA
   const handleFillGridFromFile = async () => {
     const scene = sceneRef.current
     const grid = gridRef.current
@@ -668,13 +789,11 @@ export default function Home() {
 
   // Reset gry
   const resetGame = useCallback(() => {
-    // Usuń pionek
     if (pawnRef.current) {
       pawnRef.current.destroy()
       pawnRef.current = null
     }
 
-    // Reset stanów
     setCurrentNodeId(null)
     setPawnPosition({ row: 6, col: 6 })
     setCanMove(false)
@@ -682,15 +801,35 @@ export default function Home() {
     setCurrentLayer("SIDEWALKS")
     setAvailableNodes([])
     setDebugInfo(["Gra zresetowana"])
+    setGameMessage("")
 
     console.log("Gra zresetowana")
   }, [])
 
-
-
   return (
     <div style={{ display: "flex", height: "95vh" }}>
-      <div ref={gameContainerRef} style={{ flex: 1 }} />
+      <div ref={gameContainerRef} style={{ flex: 1, position: "relative" }}>
+        {gameMessage && (
+          <div
+            style={{
+              position: "absolute",
+              top: "20px",
+              left: "50%",
+              transform: "translateX(-50%)",
+              background: "rgba(0, 0, 0, 0.8)",
+              color: "#fff",
+              padding: "10px 20px",
+              borderRadius: "8px",
+              fontSize: "16px",
+              fontWeight: "bold",
+              zIndex: 1000,
+              border: "2px solid #444",
+            }}
+          >
+            {gameMessage}
+          </div>
+        )}
+      </div>
       <div
         style={{
           width: "240px",
@@ -715,7 +854,7 @@ export default function Home() {
         <div style={{ marginTop: "20px", fontSize: "12px", color: "#aaa" }}>
           Status: {gameLoaded ? "Gra gotowa" : "Ładowanie..."}
           {gameLoaded && graph ? " | Graf załadowany" : ""}
-          {currentNodeId ? ` | ruch: ${currentNodeId}` : ""}
+          {currentNodeId ? ` | Węzeł: ${currentNodeId}` : ""}
         </div>
         <div style={{ marginTop: "10px", fontSize: "12px", color: "#aaa" }}>
           Warstwa: {currentLayer} | {isInsideBuilding ? "W budynku" : "Na zewnątrz"}
@@ -761,14 +900,14 @@ export default function Home() {
             padding: "5px",
           }}
         >
-          <div>ruch: {currentNodeId || "Brak"}</div>
+          <div>Węzeł: {currentNodeId || "Brak"}</div>
           <div>Warstwa: {currentLayer}</div>
           <div>
             Pozycja: Wiersz {pawnPosition.row}, Kol {pawnPosition.col}
           </div>
           <div>W budynku: {isInsideBuilding ? "Tak" : "Nie"}</div>
           <div>Możliwość ruchu: {canMove ? "Tak" : "Nie"}</div>
-          <div>Dostępne Ruchy : {availableNodes.length}</div>
+          <div>Dostępne ruchy: {availableNodes.length}</div>
         </div>
         <div
           style={{
@@ -788,6 +927,12 @@ export default function Home() {
               {msg}
             </div>
           ))}
+        </div>
+        <div style={{ marginTop: "10px", fontSize: "11px", color: "#666" }}>
+          <div>Sterowanie:</div>
+          <div>• Strzałki - ruch</div>
+          <div>• O - wejście/wyjście z budynku</div>
+          <div>• L - zmiana warstwy</div>
         </div>
       </div>
     </div>
