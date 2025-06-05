@@ -26,11 +26,11 @@ export const PAWN_TEXTURES: Record<string, string> = {
   SIDEWALKS: "pieszy",
   METRO: "pieszy-metro",
   TRACKS: "pieszy-pociag",
-  RIVERFERRY: "pieszy-prom",
+  RIVERFERRY: "samochod-prom",
   RIVERBOAT: "pieszy-prom",
   ROADS: "samochod",
   TUNEL: "samochod-tunel",
-  OBJECTS: "samochod-prom",
+  OBJECTS: "dom",
 }
 
 export const ROTATION_MAP: Record<string, number> = {
