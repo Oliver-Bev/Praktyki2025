@@ -16,8 +16,8 @@ export function parseNodeId(id: string): ParsedNodeInfo | null {
   const row = Number.parseInt(rowMatch[1])
   const col = Number.parseInt(colMatch[1])
 
-  const quarter = parts.length > 2 ? parts[2] : null
-  const subQuarter = parts.length > 3 ? parts[3] : null
+  const quarter = parts[3]
+  const subQuarter = parts[4]
 
   return { layer, row, col, quarter, subQuarter }
 }
